@@ -6,6 +6,7 @@ import com.springboot.blog.payload.ApiResponse;
 import com.springboot.blog.payload.CommentDto;
 import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class CommentController {
 
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<ApiResponse<CommentDto>> createComment(@PathVariable(value = "postId") long postId,
-                                                                 @RequestBody CommentDto commentDto) {
+    public ResponseEntity<ApiResponse<CommentDto>> createComment( @PathVariable(value = "postId") long postId,
+                                                                  @Valid  @RequestBody CommentDto commentDto) {
         CommentDto createdComment = commentService.createComment(postId, commentDto);
         ApiResponse<CommentDto> response = new ApiResponse<>("Comment created successfully", createdComment, HttpStatus.CREATED.value());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -49,9 +50,9 @@ public class CommentController {
 
 
     @PutMapping("/posts/{postId}/comments/{commentId}")
-    public ResponseEntity<ApiResponse<CommentDto>> updateComment(@PathVariable(value = "postId") long postId,
+    public ResponseEntity<ApiResponse<CommentDto>> updateComment(  @PathVariable(value = "postId") long postId,
                                                                  @PathVariable(value = "commentId") long commentId,
-                                                                 @RequestBody CommentDto commentDto) {
+                                                                   @Valid @RequestBody CommentDto commentDto) {
 
         CommentDto updatedComment = commentService.updateComment(postId, commentId, commentDto);
         ApiResponse<CommentDto> response =  new ApiResponse<>("Comment updated successfully", updatedComment, HttpStatus.OK.value());
